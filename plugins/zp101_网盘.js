@@ -27,15 +27,23 @@ function render(ref) {
 function rList(ref) {
     const { type } = ref
     const arr = ref.tab === "收藏" ? ref.favorites : ref.all
-    if (type === "i") return arr.map((o, i) => <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
-        <img src={o.url + "?x-oss-process=image/resize,m_fill,h_300,w_300"} title={o.name}/>
-        {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
-    </a>)
-    if (type === "v") return arr.map((o, i) => <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
-        <img src={o.url + "?x-oss-process=video/snapshot,m_fast,t_5000,w_0,ar_auto"} title={o.name}/>
-        {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
-        <i className="zplaybtn"/>
-    </a>)
+    if (type === "i") return arr.map((o, i) => 
+        <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
+            <img src={o.url.endsWith("svg") || o.url.endsWith("ico") ? o.url : o.url + "?x-oss-process=image/resize,m_fill,h_300,w_300"} title={o.name}/>
+            {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
+        </a>)
+    if (type === "v") return arr.map((o, i) => 
+        <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
+            <img src={o.url + "?x-oss-process=video/snapshot,m_fast,t_5000,w_0,ar_auto"} title={o.name}/>
+            {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
+            <i className="zplaybtn"/>
+        </a>)
+    if (type === "f") return <div className="zcells">
+            {arr.map((o, i) => <a className="zcell" onClick={() => onSelect(ref, o)} key={i}>
+                <div>{o.name}</div>
+                {rFavorite(ref, o)}{ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}
+            </a>)}
+        </div>
 }
 
 function rX(cx, onClick) {
@@ -139,7 +147,7 @@ $plugin({
     }, {
         prop: "label",
         type: "text",
-        label: "[网盘]文本"
+        label: "【网盘】文本"
     }],
     render,
     onInit,
@@ -150,5 +158,6 @@ $plugin({
 const LABEL = { i: "图片", v: "视频", f: "文件" }
 const EL = {
     i: <svg className="zsvg" viewBox="0 0 1024 1024"><path d="M896 1024H128a128 128 0 0 1-128-128V128a128 128 0 0 1 128-128h768a128 128 0 0 1 128 128v768a128 128 0 0 1-128 128z m0-64a64 64 0 0 0 64-64v-256.032l-192-192-273.184 273.152L730.624 960H896zM64 896a64 64 0 0 0 64 64h512.032L318.24 638.208 64 865.952V896zM960 128a64 64 0 0 0-64-64H128a64 64 0 0 0-64 64v650.752L320 544l129.856 131.552L768 352l192 196.096V128zM256 384a128 128 0 1 1 0-256 128 128 0 0 1 0 256z m0-192a64 64 0 1 0 0.032 128.032A64 64 0 0 0 256 192z"/></svg>,
-    v: <svg className="zsvg" viewBox="64 64 896 896"><path d="M912 302.3L784 376V224c0-35.3-28.7-64-64-64H128c-35.3 0-64 28.7-64 64v576c0 35.3 28.7 64 64 64h592c35.3 0 64-28.7 64-64V648l128 73.7c21.3 12.3 48-3.1 48-27.6V330c0-24.6-26.7-40-48-27.7zM712 792H136V232h576v560zm176-167l-104-59.8V458.9L888 399v226zM208 360h112c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H208c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8z"/></svg>
+    v: <svg className="zsvg" viewBox="64 64 896 896"><path d="M912 302.3L784 376V224c0-35.3-28.7-64-64-64H128c-35.3 0-64 28.7-64 64v576c0 35.3 28.7 64 64 64h592c35.3 0 64-28.7 64-64V648l128 73.7c21.3 12.3 48-3.1 48-27.6V330c0-24.6-26.7-40-48-27.7zM712 792H136V232h576v560zm176-167l-104-59.8V458.9L888 399v226zM208 360h112c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8H208c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8z"/></svg>,
+    f: <svg className="zsvg" viewBox="0 0 1024 1024"><path d="M870.4 358.4h-204.8a102.4 102.4 0 0 1-102.4-102.4V51.2H204.8a51.2 51.2 0 0 0-51.2 51.2v819.2a51.2 51.2 0 0 0 51.2 51.2h614.4a51.2 51.2 0 0 0 51.2-51.2V358.4z m-21.1968-51.2L614.4 72.3968V256a51.2 51.2 0 0 0 51.2 51.2h183.6032z m-277.1968-307.2a102.4 102.4 0 0 1 72.3968 30.0032l247.1936 247.1936A102.4 102.4 0 0 1 921.6 349.5936V921.6a102.4 102.4 0 0 1-102.4 102.4H204.8a102.4 102.4 0 0 1-102.4-102.4V102.4a102.4 102.4 0 0 1 102.4-102.4h367.2064z"/></svg>
 }

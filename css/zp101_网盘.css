@@ -81,7 +81,8 @@ module.exports=`
     right: 3px;
 }
 
-.zp101B .zp101star:hover {
+.zp101B .zp101star:hover,
+.zcell .zp101star:hover {
     fill: grey;
 }
 
@@ -90,7 +91,8 @@ module.exports=`
     fill: rgb(9, 187, 7);
 }
 
-.zp101B .zp101stared:hover {
+.zp101B .zp101stared:hover,
+.zcell .zp101stared:hover {
     fill: rgb(123 220 122);
 }
 
@@ -99,8 +101,22 @@ module.exports=`
     width: 16px;
 }
 
-.zp101B .zp101del:hover {
+.zp101B .zp101del:hover,
+.zcell .zp101del:hover {
     fill: red;
+}
+
+.zcell svg {
+    fill: #dadada;
+    position: absolute;
+    right: 25px;
+}
+
+.zcell .zp101del {
+    right: 0;
+}
+.zcell .zp101stared {
+    fill: rgb(9, 187, 7);
 }
 
 `
