@@ -3,6 +3,7 @@ import css from "../css/zp101_网盘.css"
 
 function render(ref) {
     const { type, tab } = ref
+    if (!ref.auth) return <div>需要登录</div>
     return <React.Fragment>
         <a onClick={() => open(ref)} className="zp101A">{EL[type]}{EL[type]}<label>{ref.props.label || "网盘"}</label></a>
         {!!ref.open && <div className="zmodals">
@@ -27,12 +28,12 @@ function render(ref) {
 function rList(ref) {
     const { type } = ref
     const arr = ref.tab === "收藏" ? ref.favorites : ref.all
-    if (type === "i") return arr.map((o, i) => 
+    if (type === "i") return arr.map((o, i) =>
         <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
             <img src={o.url.endsWith("svg") || o.url.endsWith("ico") ? o.url : o.url + "?x-oss-process=image/resize,m_fill,h_300,w_300"} title={o.name}/>
             {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
         </a>)
-    if (type === "v") return arr.map((o, i) => 
+    if (type === "v") return arr.map((o, i) =>
         <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
             <img src={o.url + "?x-oss-process=video/snapshot,m_fast,t_5000,w_0,ar_auto"} title={o.name}/>
             {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
@@ -58,7 +59,6 @@ function onInit(ref) {
     const { exc, props, render } = ref
     const type = ref.type = props.type || "i"
     ref.auth = exc("$c.me._id")
-    if (!ref.auth) return exc('warn("需要在根节点勾选[需要登录]")')
     ref.O = { limit: 20, skip: 0 }
     ref.Q = { type, status: { $exists: false } }
     if (props.mineOnly) ref.Q.auth = ref.auth
@@ -67,8 +67,8 @@ function onInit(ref) {
     ref.tab = ref.favorites.length ? "收藏" : type
     ref.io = new IntersectionObserver((entries, observer) => entries.forEach(x => {
         if (!x.isIntersecting || ref.tab === "收藏") return
+        if (exc('$c.x.zp101.count') < ref.O.skip + 20) return ref.io.disconnect()
         ref.O.skip = ref.O.skip + 20
-        if (exc('$c.x.zp101.count') < ref.O.skip) return ref.io.disconnect()
         exc('$resource.search("zp101", ref.Q, ref.O)', { ref }, () => ref.render())
     }))
 }
@@ -91,7 +91,7 @@ function close(ref) {
 
 function onSelect(ref, o) {
     const on = ref.props.onSelect
-    typeof on === "function" ? on(o.url) : ref.exc(on, { ...ref.ctx, $x: o.url }, () => ref.exc("render()"))
+    typeof on === "function" ? on(o) : ref.exc(on, { $ext: ref.ctx, ...o }, () => ref.exc("render()"))
     close(ref)
 }
 
@@ -143,7 +143,7 @@ $plugin({
         prop: "onSelect",
         type: "exp",
         label: "onSelect表达式",
-        ph: "选择一个资源地址($x)后执行"
+        ph: "选择一个资源后执行 { url, name, size }"
     }, {
         prop: "label",
         type: "text",
