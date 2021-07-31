@@ -110,7 +110,7 @@ function favorite(e, o, ref) {
 function del(e, id, ref) {
     e.stopPropagation()
     const { exc, favorites } = ref
-    exc('confirm("注意, 即将彻底删除此图片", "请确保此图片已不在任何地方使用"); $resource.delete(id)', { id }, r => {
+    exc('confirm("注意, 即将彻底删除此" + type, "请确保此" + type + "已不在任何地方使用"); $resource.delete(id)', { id, type: LABEL[ref.type] }, r => {
         if (!r._id) return exc('warn("删除失败")')
         ref.all.splice(ref.all.findIndex(a => a._id === id), 1)
         if (favorites.find(a => a._id === id)) {
