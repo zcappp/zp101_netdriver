@@ -35,7 +35,7 @@ function rList(ref) {
         </a>)
     if (type === "v") return arr.map((o, i) =>
         <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
-            <img src={o.url + "?x-oss-process=video/snapshot,m_fast,t_5000,w_0,ar_auto"} title={o.name}/>
+            {!o.url.endsWith("mp4") ? <video src={o.url}/> : <img src={o.url + "?x-oss-process=video/snapshot,m_fast,t_5000,w_0,ar_auto"} title={o.name}/>}
             {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
             <i className="zplaybtn"/>
         </a>)
