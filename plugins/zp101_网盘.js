@@ -59,7 +59,7 @@ function onInit(ref) {
     const { exc, props, render } = ref
     const type = ref.type = props.type || "i"
     ref.auth = exc("$c.me._id")
-    ref.O = { limit: 20, skip: 0 }
+    ref.O = { select: "type name format auth", sort: {_id: -1}, limit: 20, skip: 0 }
     ref.Q = { type, status: { $exists: false } }
     if (props.mineOnly) ref.Q.auth = ref.auth
     ref.favorites = exc(`localStorage("zp101_${type}")`)
