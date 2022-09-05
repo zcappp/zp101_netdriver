@@ -11,7 +11,7 @@ function render(ref) {
             <div className="zmodal">
                 {rX("zsvg_x", () => close(ref))}
                 <div className="zmodal_hd">
-                    <ul className="znopdmg">
+                    <ul className="znone">
                         <li onClick={() => {ref.tab = type; ref.render()}} className={"ztab" + (tab === type ? " zcur" : "")}>{LABEL[type]}</li>
                         <li onClick={() => {ref.tab = "收藏"; ref.render()}} className={"ztab" + (tab === "收藏" ? " zcur" : "")}>收藏</li>
                     </ul>
@@ -20,6 +20,7 @@ function render(ref) {
                     {rList(ref)}
                     <div className="交叉观察器"/>
                 </div>
+                <div className="zmodal_ft"/>
             </div>
         </div>}
     </React.Fragment>
@@ -30,7 +31,7 @@ function rList(ref) {
     const arr = ref.tab === "收藏" ? ref.favorites : ref.all
     if (type === "i") return arr.map((o, i) =>
         <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
-            <img src={o.url.endsWith("svg") || o.url.endsWith("ico") ? o.url : o.url + "?x-oss-process=image/resize,m_fill,h_300,w_300"} title={o.name}/>
+            <img src={o.url.endsWith("svg") || o.url.endsWith("ico") || o.url.endsWith("webm") ? o.url : o.url + "?x-oss-process=image/resize,m_fill,h_300,w_300"} title={o.name}/>
             {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
         </a>)
     if (type === "v") return arr.map((o, i) =>

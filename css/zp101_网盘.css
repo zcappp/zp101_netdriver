@@ -12,8 +12,9 @@ module.exports=`
 }
 
 .zp101 .zmodal {
+    width: calc(100% - 8px);
     min-width: 490px;
-    max-width: 820px;
+    max-height: calc(100vh - 20px);
 }
 
 .zp101B {
@@ -61,8 +62,15 @@ module.exports=`
     transform: rotate(18deg);
 }
 
+.zp101 .zmodal_hd ul {
+    text-align: center;
+    margin: 7px;
+}
+
 .zp101 .zmodal_bd {
-    min-height: 500px;
+    height: 700px;
+    padding: 9px;
+    overflow: auto;
 }
 
 
@@ -115,6 +123,7 @@ module.exports=`
 .zcell .zp101del {
     right: 0;
 }
+
 .zcell .zp101stared {
     fill: rgb(9, 187, 7);
 }
