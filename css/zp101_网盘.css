@@ -5,8 +5,8 @@ module.exports=`
 .zp101B {
     overflow: hidden;
     position: relative;
-    width: 152px;
-    height: 152px;
+    width: 100px;
+    height: 100px;
     margin: 1px;
     border: 1px solid rgb(221, 221, 221);
 }
@@ -15,6 +15,10 @@ module.exports=`
     width: calc(100% - 8px);
     min-width: 490px;
     max-height: calc(100vh - 20px);
+}
+
+.zmobile .zp101 .zmodal {
+    min-width: 100vw;
 }
 
 .zp101B {
@@ -29,7 +33,7 @@ module.exports=`
 
 .zp101 label {
     position: absolute;
-    bottom: 20%;
+    bottom: 15%;
     width: 100%;
     text-align: center;
     color: rgb(105, 105, 105);
