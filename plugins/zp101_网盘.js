@@ -57,28 +57,28 @@ function rFavorite(ref, o) {
 }
 
 function init(ref) {
-    const { exc, props, render } = ref
+    const { excA, props, render } = ref
     const type = ref.type = props.type || "i"
-    ref.auth = exc("$c.me._id")
+    ref.auth = excA("$c.me._id")
     ref.O = { select: "type name format auth", sort: {_id: -1}, limit: 20, skip: 0 }
     ref.Q = { type, status: { $exists: false } }
     if (props.mineOnly) ref.Q.auth = ref.auth
-    ref.favorites = exc(`localStorage("zp101_${type}")`)
+    ref.favorites = excA(`localStorage("zp101_${type}")`)
     if (!Array.isArray(ref.favorites)) ref.favorites = []
     ref.tab = ref.favorites.length ? "收藏" : type
     ref.io = new IntersectionObserver((entries, observer) => entries.forEach(x => {
         if (!x.isIntersecting || ref.tab === "收藏") return
-        if (exc('$c.x.zp101.count') < ref.O.skip + 20) return ref.io.disconnect()
+        if (excA('$c.x.zp101.count') < ref.O.skip + 20) return ref.io.disconnect()
         ref.O.skip = ref.O.skip + 20
-        exc('$resource.search("zp101", ref.Q, ref.O)', { ref }, () => ref.render())
+        excA('$resource.search("zp101", ref.Q, ref.O)', { ref }, () => ref.render())
     }))
 }
 
 function open(ref) {
-    const { exc } = ref
-    exc('$resource.search("zp101", ref.Q, ref.O)', { ref }, $r => {
+    const { excA } = ref
+    excA('$resource.search("zp101", ref.Q, ref.O)', { ref }, $r => {
         ref.open = true
-        ref.all = exc("$c.x.zp101.all") || []
+        ref.all = excA("$c.x.zp101.all") || []
         ref.render()
         setTimeout(() => ref.io.observe($("#" + ref.id + " .交叉观察器")), 9)
     })
