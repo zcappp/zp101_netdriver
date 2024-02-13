@@ -1,5 +1,5 @@
 import React from "react"
-import css from "../css/zp101_网盘.css"
+import css from "./zp101_网盘.css"
 
 function render(ref) {
     const { type, tab } = ref
