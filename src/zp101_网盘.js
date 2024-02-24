@@ -29,23 +29,29 @@ function render(ref) {
 function rList(ref) {
     const { type } = ref
     const arr = ref.tab === "收藏" ? ref.favorites : ref.all
-    if (type === "i") return arr.map((o, i) =>
-        <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
+    if (type === "i") {
+        return arr.map((o, i) =>
+            <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
             <img src={o.url.endsWith("svg") || o.url.endsWith("ico") || o.url.endsWith("webm") ? o.url : o.url + "?x-oss-process=image/resize,m_fill,h_300,w_300"} title={o.name}/>
             {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
         </a>)
-    if (type === "v") return arr.map((o, i) =>
-        <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
+    }
+    if (type === "v") {
+        return arr.map((o, i) =>
+            <a className="zp101B" onClick={() => onSelect(ref, o)} key={i}>
             {!o.url.endsWith("mp4") ? <video src={o.url}/> : <img src={o.url + "?x-oss-process=video/snapshot,m_fast,t_5000,w_0,ar_auto"} title={o.name}/>}
             {ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}{rFavorite(ref, o)}
             <i className="zplaybtn"/>
         </a>)
-    if (type === "f") return <div className="zcells">
+    }
+    if (type === "f") {
+        return <div className="zcells">
             {arr.map((o, i) => <a className="zcell" onClick={() => onSelect(ref, o)} key={i}>
                 <div>{o.name}</div>
                 {rFavorite(ref, o)}{ref.auth === o.auth && rX("zp101del", e => del(e, o._id, ref))}
             </a>)}
         </div>
+    }
 }
 
 function rX(cx, onClick) {
@@ -57,28 +63,26 @@ function rFavorite(ref, o) {
 }
 
 function init(ref) {
-    const { excA, props, render } = ref
-    const type = ref.type = props.type || "i"
-    ref.auth = excA("$c.me._id")
-    ref.O = { select: "type name format auth", sort: {_id: -1}, limit: 20, skip: 0 }
+    const type = ref.type = ref.props.type || "i"
+    ref.auth = ref.excA("$c.me._id")
+    ref.O = { select: "type name format auth", sort: { _id: -1 }, limit: 20, skip: 0 }
     ref.Q = { type, status: { $exists: false } }
-    if (props.mineOnly) ref.Q.auth = ref.auth
-    ref.favorites = excA(`localStorage("zp101_${type}")`)
+    if (ref.props.mineOnly) ref.Q.auth = ref.auth
+    ref.favorites = ref.excA(`localStorage("zp101_${type}")`)
     if (!Array.isArray(ref.favorites)) ref.favorites = []
     ref.tab = ref.favorites.length ? "收藏" : type
     ref.io = new IntersectionObserver((entries, observer) => entries.forEach(x => {
         if (!x.isIntersecting || ref.tab === "收藏") return
-        if (excA('$c.x.zp101.count') < ref.O.skip + 20) return ref.io.disconnect()
+        if (ref.excA('$c.x.zp101.count') < ref.O.skip + 20) return ref.io.disconnect()
         ref.O.skip = ref.O.skip + 20
-        excA('$resource.search("zp101", ref.Q, ref.O)', { ref }, () => ref.render())
+        ref.exc('$resource.search("zp101", ref.Q, ref.O)', { ref }, () => ref.render())
     }))
 }
 
 function open(ref) {
-    const { excA } = ref
-    excA('$resource.search("zp101", ref.Q, ref.O)', { ref }, $r => {
+    ref.exc('$resource.search("zp101", ref.Q, ref.O)', { ref }, $r => {
         ref.open = true
-        ref.all = excA("$c.x.zp101.all") || []
+        ref.all = ref.excA("$c.x.zp101.all") || []
         ref.render()
         setTimeout(() => ref.io.observe($("#" + ref.id + " .交叉观察器")), 9)
     })
