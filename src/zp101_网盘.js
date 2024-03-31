@@ -10,17 +10,17 @@ function render(ref) {
             <div className="zmask" onClick={() => close(ref)}/>
             <div className="zmodal">
                 {rX("zsvg_x", () => close(ref))}
-                <div className="zmodal_hd">
+                <div className="hd">
                     <ul className="znone">
-                        <li onClick={() => {ref.tab = type; ref.render()}} className={"ztab" + (tab === type ? " zcur" : "")}>{LABEL[type]}</li>
-                        <li onClick={() => {ref.tab = "收藏"; ref.render()}} className={"ztab" + (tab === "收藏" ? " zcur" : "")}>收藏</li>
+                        <li onClick={() => {ref.tab = type; ref.render()}} className={"ztab" + (tab === type ? " cur" : "")}>{LABEL[type]}</li>
+                        <li onClick={() => {ref.tab = "收藏"; ref.render()}} className={"ztab" + (tab === "收藏" ? " cur" : "")}>收藏</li>
                     </ul>
                 </div>
-                <div className="zmodal_bd">
+                <div className="bd">
                     {rList(ref)}
                     <div className="交叉观察器"/>
                 </div>
-                <div className="zmodal_ft"/>
+                <div className="ft"/>
             </div>
         </div>}
     </React.Fragment>
